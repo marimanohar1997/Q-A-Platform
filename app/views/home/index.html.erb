@@ -1,5 +1,8 @@
 <h3><b>All Questions</b></h3>
 
+
+
+<% if @questions.count > 0 %>
 <ul class="list-group">
     <% @questions.order('created_at DESC').each do |question| %>
       <div class="panel panel-primary">
@@ -25,21 +28,21 @@
         <% end %>
           <% if current_user %>
           <% else %>
-          Share your answers by
+          <b style="font-style: italic;color: darkred">Ask a question or Share your answers by</b>
           <a href="/users/sign_up" class="badge badge-primary">Register</a> or 
           <a href="/users/sign_in" class="badge badge-success">Login</a>
           <% end %>
           <% question.answers.order('created_at DESC').each do |answer| %>
           <div class="panel panel-default">
             <div class="card">
-              <h5 class="card-header"><%= answer.user.email %> answered <%= time_ago_in_words(answer.created_at) %> ago. </h5>
+              <p class="card-header"><%= answer.user.email %> answered <%= time_ago_in_words(answer.created_at) %> ago. </p>
 
               <div class="card-body">
                 <p class="card-text"><%= answer.content %></p>
                  <b style="float: left;"> - <%= answer.user.email %></b>
 
                 <button type="button" class="btn btn-primary" style="float: right;">
-                    Tags:  <span class="badge badge-light"><%= question.tags %></span>
+                     <span class="badge badge-light"><%= question.tags %></span>
                 </button>
                 <br>
                 <% if answer.user == current_user %>
@@ -47,17 +50,21 @@
                 <% end %>
               </div>
             </div>
-            <div class="panel-body">
-           </div>
           </div>
           <% end %>
-        <div class="panel-body">
-          <hr>
-        </div>
         </div>
       <% end %>
       </ul>
+<% else %>
+<div class="panel panel-default">
+            <div class="card">
+              <p class="card-header">No data found </p>
 
+              
+            </div>
+          </div>
+
+<% end %>
 
 <%= will_paginate @questions%>
 
