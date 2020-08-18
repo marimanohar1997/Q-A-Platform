@@ -32,7 +32,8 @@
 
 <br>
 <hr>
-<% @question.answers.each do |answer| %>
+
+<% @question.answers.order('created_at DESC').each do |answer| %>
 <div class="panel panel-default">
   <div class="panel-heading">
     
@@ -42,7 +43,7 @@
   </div>
   </div>
 
-  <div style="margin: 55px 0px 0px 0px">
+  <div style="margin: 20px 0px 27px 0px">
     <% if answer.user == current_user %>
       <%= link_to 'Edit', edit_answer_path(answer), :class => 'btn btn-info' %>
 
