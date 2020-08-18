@@ -1,0 +1,51 @@
+<%- model_class = Question -%>
+
+
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+</div>
+<ul class="list-group">
+   
+
+  <div class="card">
+  <div class="card-body">
+     <% @questions.each do |question| %>
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <a href="<%=question_path(question) %>">
+            <h3 class="panel-title"><%=  question.title %></h3>
+          </a>
+        </div>
+        <div class="panel-body">
+          <%= question.description %> 
+          <div style="float: right;">
+          Post <%= time_ago_in_words(question.created_at) %> ago
+          <button type="button" class="btn btn-primary" style="float: left;margin: -5px 20px 0px 0px">
+                     <span class="badge badge-light"><%= question.tags %></span>
+          </button>
+        </div>
+        <br><br>
+          <% if question.answers.size > 0 %>
+          <div class="alert alert-success" role="alert"><%= question.answers.size %> best solutions for this question.</div>
+        <% else %>
+          <div class="alert alert-danger" role="alert">There is no answers for this question, please add your answer to help the questioner.</div>
+        <% end %>
+        <hr class="rounded">
+        </div>
+      </div>
+  <% end %>
+  </div>
+</div>
+</ul>
+
+
+
+<style>
+hr.dashed {
+  border-top: 3px dashed #bbb;
+}
+</style>
+
+
+
+

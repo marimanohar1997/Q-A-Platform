@@ -1,0 +1,90 @@
+<h3><b>All Questions</b></h3>
+
+<ul class="list-group">
+    <% @questions.each do |question| %>
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+       <% if current_user %>
+          <a href="<%=question_path(question) %>">
+            <h4 class="panel-title"><%=  question.description %></h4>
+            
+            <button type="button" class="btn btn-info" style="margin: -60px 0px 0px 1000px">Views: <%= question.impressions.count %>  </button> 
+          </a>
+          <% else %>
+          <a href="">
+            <button type="button" class="btn btn-primary" style="float: right;">
+                     <span class="badge badge-light"><%= question.tags %></span>
+                </button>
+              <h4 class="panel-title"><%=  question.description %></h4><button type="button" class="btn btn-info" style="margin: -60px 0px 0px 577px">Viewed by <%= question.impressions.count %>  </button> </a>
+          <% end %>
+        </div>
+        <% if question.answers.size > 0 %>
+          <div class="alert alert-success" role="alert"><%= question.answers.size %> best solutions for this question.</div>
+        <% else %>
+          <div class="alert alert-danger" role="alert">There is no answers for this question, please add your answer to help the questioner.</div>
+        <% end %>
+          <% if current_user %>
+          <% else %>
+          Share your answers by
+          <a href="/users/sign_up" class="badge badge-primary">Register</a> or 
+          <a href="/users/sign_in" class="badge badge-success">Login</a>
+          <% end %>
+          <% question.answers.each do |answer| %>
+          <div class="panel panel-default">
+            <div class="card">
+              <h5 class="card-header"><%= answer.user.email %> answered <%= time_ago_in_words(answer.created_at) %> ago. </h5>
+
+              <div class="card-body">
+                <p class="card-text"><%= answer.content %></p>
+                 <b style="float: left;"> - <%= answer.user.email %></b>
+
+                <button type="button" class="btn btn-primary" style="float: right;">
+                    Tags:  <span class="badge badge-light"><%= question.tags %></span>
+                </button>
+                <br>
+                <% if answer.user == current_user %>
+                    <%= link_to 'Edit', edit_answer_path(answer), :class=>"btn btn-info"%>
+                <% end %>
+              </div>
+            </div>
+            <div class="panel-body">
+           </div>
+          </div>
+          <% end %>
+        <div class="panel-body">
+          <hr>
+        </div>
+        </div>
+      <% end %>
+      </ul>
+
+
+<%= will_paginate @questions%>
+
+<style type="text/css">
+  .pull-right{
+    float: right;
+  }
+
+  .pagination .current {
+  display: inline-block;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: inline-block;
+    color: black;
+    float: left;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid #ddd;
+}
+</style>

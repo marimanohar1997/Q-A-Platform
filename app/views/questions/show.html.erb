@@ -1,0 +1,85 @@
+<%- model_class = Question -%>
+<div>Views: <%= @question.impressionist_count %></div>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <button type="button" class="btn btn-primary" style="float: right;">
+          <span class="badge badge-light"><%=t '.title', :default => @question.title %></span>
+      </button>
+   <b style="color: brown"> <%= @question.user.email %> </b> posted <%= time_ago_in_words(@question.created_at) %> ago.
+  </div>
+  <br/>
+  <div class="panel-body"><h3><%= @question.description %></h3></div>
+</div>
+
+<% if current_user.present? && @question.user_id == current_user.id %>
+<div style="text-align: right;">
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_question_path(@question), :class => 'btn btn-default' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              question_path(@question),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>
+</div>
+<% end %>
+<br>
+
+<% if @question.answers.size > 0 %>
+  <div class="alert alert-success" role="alert">There have <%= @question.answers.size %> answers for this question.</div>
+<% else %>
+  <div class="alert alert-danger" role="alert">There is no answers for this question, please add your answer to help the questioner.</div>
+<% end %>
+
+<br>
+<hr>
+<% @question.answers.each do |answer| %>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    
+    <%= answer.content %> <br/>
+    <div style="float: right;color: brown">
+   - <%= answer.user.email %> answered <%= time_ago_in_words(answer.created_at) %> ago.
+  </div>
+  </div>
+
+  <div style="margin: 55px 0px 0px 0px">
+    <% if answer.user == current_user %>
+      <%= link_to 'Edit', edit_answer_path(answer), :class => 'btn btn-info' %>
+
+    <% end %>
+  </div>
+</div>
+<% end %>
+
+
+
+
+
+<% if current_user.present? %>
+  <%= form_for @answer, :html => { :class => "form-horizontal question" } do |f| %>
+  <div class="form-group container">
+    <%= f.label :content, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_area :content, :size => "20x10", :class => 'form-control' %>
+    </div>
+    <%= f.hidden_field :question_id, :value => @question.id %>
+    <%=f.error_span(:content) %>
+  </div>
+
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <%= f.submit nil, :class => 'btn btn-primary' %>
+    </div>
+  </div>
+  <% end %>
+<% else %>
+<div class="text-center">
+  <h3>To post your answer, please<h3>
+  <ul class="navbar-form">
+    <%= link_to (button_tag "Sign up", type: 'button', :class => 'btn btn-default'), new_user_registration_path %>
+    <%= link_to (button_tag "Sign in", type: 'button', :class => 'btn btn-default'), new_user_session_path %>
+  </ul>
+</div>
+<% end %>
+
+
