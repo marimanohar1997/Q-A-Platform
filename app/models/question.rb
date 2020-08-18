@@ -11,7 +11,7 @@ class Question < ApplicationRecord
 
   def self.search(search) 
     if search 
-      Question.where('lower(title) LIKE lower(?) OR lower(description) LIKE lower(?)', "%#{search}%", "%#{search}%")
+      Question.where('lower(title) LIKE lower(?) OR lower(tags) LIKE lower(?)', "%#{search}%", "%#{search}%")
     else
       Question.all 
     end

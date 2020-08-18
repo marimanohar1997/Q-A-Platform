@@ -35,7 +35,7 @@
           <% question.answers.order('created_at DESC').each do |answer| %>
           <div class="panel panel-default">
             <div class="card">
-              <p class="card-header"><%= answer.user.email %> answered <%= time_ago_in_words(answer.created_at) %> ago. </p>
+              <p class="card-header"><b><%= answer.user.email %> </b> answered <%= time_ago_in_words(answer.created_at) %> ago. </p>
 
               <div class="card-body">
                 <p class="card-text"><%= answer.content %></p>
@@ -52,17 +52,16 @@
             </div>
           </div>
           <% end %>
+          <hr>
         </div>
       <% end %>
       </ul>
 <% else %>
-<div class="panel panel-default">
-            <div class="card">
-              <p class="card-header">No data found </p>
-
-              
-            </div>
-          </div>
+            <div class="panel panel-default">
+                <div class="card">
+                  <p class="card-header">No data found </p>
+                </div>
+              </div>
 
 <% end %>
 
